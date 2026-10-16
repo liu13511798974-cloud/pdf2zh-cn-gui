@@ -25,13 +25,25 @@
 | 3 | 翻译服务限流时无限重试，界面卡死；空译文还会被缓存 | 有限重试 + 失败保留原文 + 空译文不缓存 |
 | 4 | 请求无超时，网络异常时长时间挂起 | 请求加 15 秒超时 |
 
-## 🚀 快速开始（Windows / macOS / Linux）
+## 🖥️ 安装教程
+
+### 方式一：离线便携包（推荐 Windows 新手，无需安装 Python、全程离线）
+
+1. 下载现成的 `PDF-Translator-Portable.zip`（见 [GitHub Releases](../../releases) 或作者分享链接；也可按下方说明自行构建）
+2. 解压到任意目录，例如 `D:\PDF翻译工具`
+3. 双击 **`安装.bat`**，等待 5~10 分钟（自动装好内置 Python 3.13、全部依赖、版面模型与修复补丁）
+4. 双击桌面的 **「PDF文献翻译工具」** 快捷方式 → 浏览器自动打开 http://127.0.0.1:7860
+5. 拖入英文 PDF → 点「开始翻译」→ 下载「中文版」与「中英对照版」
+
+> 要求：Windows 10/11 64 位；安装后请勿移动/删除工具目录；结果保存在目录内 `翻译输出` 文件夹。
+
+### 方式二：源码安装（Windows / macOS / Linux，需 Python 3.10+）
 
 ```bash
 # 1. 安装上游（本修复针对 1.7.9）
 pip install pdf2zh==1.7.9
 
-# 2. 应用本仓库的修复补丁
+# 2. 应用本仓库的修复补丁（幂等，可重复运行）
 python apply_patches.py
 
 # 3. 启动中文界面
@@ -42,6 +54,26 @@ python app/pdf2zh_gui_cn.py
 
 > 首次运行会自动下载版面分析模型（约 80 MB，来自 Hugging Face）。
 > 国内网络可先设置镜像：`set HF_ENDPOINT=https://hf-mirror.com`（Windows）/ `export HF_ENDPOINT=https://hf-mirror.com`（macOS/Linux）。
+
+## 💎 强烈推荐：接入 DeepSeek API（效果最好、价格极低）
+
+免费网页引擎虽然零成本，但翻译质量、术语准确度和稳定性都不如大模型 API。
+**DeepSeek 的中英学术翻译质量与 GPT 同档，价格却便宜一个数量级**——百万 token 仅几毛到一两块钱，
+翻译一篇 10 页论文的成本不到 1 分钱，充值几块钱能用几个月。
+
+- 🔗 注册与充值：[platform.deepseek.com](https://platform.deepseek.com)（注册后在控制台少量充值即可）
+- 🔗 获取 API Key：[platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys)（点「创建 API Key」，复制 `sk-` 开头的密钥）
+- 🔗 官方定价：[api-docs.deepseek.com/quick_start/pricing](https://api-docs.deepseek.com/quick_start/pricing/)
+
+### 在翻译软件里选择 DeepSeek（3 步）
+
+1. 打开界面 http://127.0.0.1:7860
+2. 「② 翻译引擎」下拉框选择 **「OpenAI 兼容 / DeepSeek（需密钥，质量最佳）」**
+3. 展开「🔑 模型与密钥设置」，只需填 **「OpenAI 兼容密钥」**（粘贴 `sk-...`），其余保持默认：
+   - 接口地址：`https://api.deepseek.com`（默认，勿改）
+   - 模型名称：`deepseek-chat`（默认，勿改）
+
+点「开始翻译」后，界面会先自动连通测试一次：密钥无效会提示 401、模型名错误会提示 404，一眼定位问题。
 
 ## 📦 构建离线便携包（可选）
 
@@ -54,7 +86,7 @@ python app/pdf2zh_gui_cn.py
 | 引擎 | 费用 | 说明 |
 |---|---|---|
 | Google | 免费 | 默认；连续大量翻译可能临时限流，等几分钟重试即可 |
-| OpenAI 兼容 / DeepSeek | 需密钥 | 质量最佳。密钥在 https://platform.deepseek.com 申请；接口地址默认 `https://api.deepseek.com`，模型名 `deepseek-chat` |
+| OpenAI 兼容 / DeepSeek | 需密钥 | **推荐！** 质量最佳且极便宜，见上方「💎 DeepSeek」章节 |
 | DeepL | 免费密钥 | 在 deepl.com 注册免费 API 后填入 |
 | DeepLX | 免费 | 需自建服务 |
 | Ollama | 免费 | 本机运行 Ollama，填入模型名（如 `gemma2`） |
