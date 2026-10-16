@@ -1,0 +1,13 @@
+# 便携包构建产物与依赖
+python/
+wheels/
+resources/
+model_cache/
+dist/
+翻译输出/
+*.pdf
+*.zip
+*.whl
+__pycache__/
+_dl_log.txt
+_install_log.txt
